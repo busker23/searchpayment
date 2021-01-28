@@ -5,7 +5,13 @@
 <title>wws</title>
 </head>
 <body>
-<iframe src="https://staging.paybox.kz/payment-search">
+ <script>
+   var frame = document.getElementById("wws");
+   frame.postMessage(JSON.strngify({
+     'country': 'kz'
+   }), '*');
+  </script>
+<iframe id="wws" src="https://staging.paybox.kz/payment-search">
 </iframe>
 </body>
 </html>
