@@ -5,13 +5,44 @@
 <title>wws</title>
 </head>
 <body>
- <script>
-   var frame = document.getElementById("wws");
-   frame.postMessage(JSON.strngify({
-     'country': 'kz'
+<iframe class="responsiveFrame" src="https://paybox.kz/payment-search" width="100%"></iframe>
+<style>
+    .responsiveFrame{
+       border:none;
+   }
+</style>
+<script>
+function setIframeHeightCO(className, ht) {
+   var ifrm = document.getElementsByClassName(className)[0];
+   ifrm.style.visibility = 'hidden';
+   // some IE versions need a bit added or scrollbar appears
+   ifrm.style.height = ht + 4 + "px";
+   ifrm.style.visibility = 'visible';
+}
+
+function handleDocHeightMsg(e) {
+   var data = JSON.parse(e.data);
+   if (data['docHeight']) {
+       setIframeHeightCO('responsiveFrame', data['docHeight']);
+   }
+   
+   
+}
+
+function sendCountry() {
+ window.frames[0].postMessage(JSON.stringify({
+   'country': 'kz'
    }), '*');
-  </script>
-<iframe id="wws" src="https://staging.paybox.kz/payment-search">
-</iframe>
+}
+
+// assign message handler
+if (window.addEventListener) {
+   window.addEventListener('message', handleDocHeightMsg, false);
+   window.addEventListener('load', sendCountry, false);
+} else if (window.attachEvent) { // ie8
+   window.attachEvent('onmessage', handleDocHeightMsg);
+}
+</script>
+
 </body>
 </html>
